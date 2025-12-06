@@ -56,6 +56,11 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 14;
     public static final int kRearRightTurningCanId = 16;
 
+    public static final int kFrontLeftTurningEncCanID = 18;
+    public static final int kRearLeftTurningEncCanID = 19;
+    public static final int kFrontRightTurningEncCanID = 20;
+    public static final int kRearRightTurningEncCanID = 21;
+
     public static final boolean kGyroReversed = false;
   }
 
@@ -63,17 +68,30 @@ public final class Constants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
     // more teeth will result in a robot that drives faster).
-    public static final int kDrivingMotorPinionTeeth = 14;
+    // public static final int kDrivingMotorPinionTeeth = 14;
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = 0.0762;
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(4) ;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion
-    public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
+    public static final double kDrivingMotorReduction = 5.36;
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
+
+    public static final double kTurningRatio = 18.75;
+    public static final double kTurningMotorFreeSpeedRPS = NeoMotorConstants.kFreeSpeedRpm / 60;
+    public static final double kTurningMaxSpeedRads = (kTurningMotorFreeSpeedRPS / kTurningRatio) * 2 * Math.PI;
+    public static final double kTurningkS = 0.05;
+    public static final double kTurninkkV = 12 / kTurningMaxSpeedRads;
+    public static final double kTurningkP = 0.1; //bump up for more response with large disturbances
+    public static final double kTurningkI = 0; //do not use
+    public static final double kTurningkD = 0; //use only if steady state oscillation occurs
+    public static final TrapezoidProfile.Constraints kTurningConstraints = new TrapezoidProfile.Constraints(
+      kTurningMaxSpeedRads,
+      kTurningMaxSpeedRads * 4 //really high = really fast accel
+    );
   }
 
   public static final class OIConstants {
