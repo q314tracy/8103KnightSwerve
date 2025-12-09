@@ -32,7 +32,7 @@ public class Swerve extends SubsystemBase {
   private final SwerveModule m_frontRight = new SwerveModule(
       DriveConstants.kFrontRightDrivingCanId,
       DriveConstants.kFrontRightTurningCanId,
-      DriveConstants.kFrontLeftTurningEncCanID,
+      DriveConstants.kFrontRightTurningEncCanID,
       DriveConstants.kFrontRightChassisAngularOffset);
 
   private final SwerveModule m_rearLeft = new SwerveModule(
@@ -194,6 +194,15 @@ public class Swerve extends SubsystemBase {
    */
   public double getTurnRate() {
     return m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public SwerveModuleState[] getStates() {
+    return new SwerveModuleState[] {
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_rearLeft.getState(),
+      m_rearRight.getState()
+    };
   }
 
 }

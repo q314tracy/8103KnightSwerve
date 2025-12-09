@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.drive.IOinterfaces.SparkMax;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.sim.SparkMaxSim;
@@ -15,9 +15,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SparkMaxSimulation extends SubsystemBase {
+public class SparkMaxSimulation implements SparkMaxIO {
 
   private final SparkMax m_motor;
   private final SparkMaxSim m_motorsim;
@@ -32,22 +31,24 @@ public class SparkMaxSimulation extends SubsystemBase {
     m_motorsim = new SparkMaxSim(m_motor, DCMotor.getNEO(1));
     m_pid = m_motor.getClosedLoopController();
   }
-
+  
+  @Override
   public void setVoltage(double volts) {
     m_motor.setVoltage(volts);
   }
 
+  @Override
   public RelativeEncoder getEncoder() {
     return m_encoder;
   }
 
+  @Override
   public SparkClosedLoopController getPIDController() {
     return m_pid;
   }
 
   @Override
   public void periodic() {
-
     m_motorsim.iterate(
       ((m_motor.getAppliedOutput()) * 5676) * m_motor.configAccessor.encoder.getVelocityConversionFactor(),
       RobotController.getBatteryVoltage(),
