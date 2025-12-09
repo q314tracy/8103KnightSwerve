@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.drive;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -23,10 +23,10 @@ import com.ctre.phoenix6.hardware.CANcoder;
 // import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
-import frc.robot.Configs;
-import frc.robot.Constants.ModuleConstants;
+import frc.robot.utils.Configs;
+import frc.robot.utils.Constants.ModuleConstants;
 
-public class MAXSwerveModule {
+public class SwerveModule {
   private final SparkMax m_drivingSpark;
   private final SparkMax m_turningSpark;
 
@@ -47,7 +47,7 @@ public class MAXSwerveModule {
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
    */
-  public MAXSwerveModule(int drivingCANId, int turningCANId, int turningEncCANId, double chassisAngularOffset) {
+  public SwerveModule(int drivingCANId, int turningCANId, int turningEncCANId, double chassisAngularOffset) {
     m_drivingSpark = new SparkMax(drivingCANId, MotorType.kBrushless);
     m_turningSpark = new SparkMax(turningCANId, MotorType.kBrushless);
 
