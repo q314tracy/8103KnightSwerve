@@ -15,10 +15,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 // import edu.wpi.first.wpilibj.ADIS16470_IMU;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.drive.IOinterfaces.Gyro.GyroIO;
+import frc.robot.subsystems.drive.IOinterfaces.Gyro.GyroReal;
+import frc.robot.subsystems.drive.IOinterfaces.Gyro.GyroSimulation;
 // import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.Constants.OIConstants;
 
 public class Swerve extends SubsystemBase {
 
@@ -48,13 +52,11 @@ public class Swerve extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
-  // private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
-  private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
+  private final GyroIO m_gyro = RobotBase.isSimulation() ? new GyroSimulation() : new GyroReal();
 
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      // Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
       Rotation2d.fromDegrees(m_gyro.getAngle()),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
@@ -63,19 +65,30 @@ public class Swerve extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
+
+
+
+
+
+
   /**
-   * Creates a new DriveSubsystem.
+   * Creates a new Swerve subsystem.
    */
   public Swerve() {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
 
+
+
+
+
+
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
+
+    // Update the odometry
     m_odometry.update(
-        // Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
         Rotation2d.fromDegrees(m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -83,7 +96,17 @@ public class Swerve extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    // check if simulation, if yes, update gyro data
+    if (RobotBase.isSimulation()) {
+      m_gyro.updatePosition(getSpeeds().omegaRadiansPerSecond / 50);
+      m_gyro.updateRate(getSpeeds().omegaRadiansPerSecond);
+    }
   }
+
+
+
+
 
   
   /**
@@ -95,6 +118,12 @@ public class Swerve extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+
+
+
+
+
+
   /**
    * Resets the odometry to the specified pose.
    *
@@ -102,7 +131,6 @@ public class Swerve extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        // Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
         Rotation2d.fromDegrees(m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -112,6 +140,11 @@ public class Swerve extends SubsystemBase {
         },
         pose);
   }
+
+
+
+
+
 
   /**
    * Method to drive the robot using joystick info.
@@ -124,10 +157,14 @@ public class Swerve extends SubsystemBase {
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     // Convert the commanded speeds into the correct units for the drivetrain
-    double xSpeedDelivered = xSpeed * DriveConstants.kMaxSpeedMetersPerSecond;
-    double ySpeedDelivered = ySpeed * DriveConstants.kMaxSpeedMetersPerSecond;
-    double rotDelivered = rot * DriveConstants.kMaxAngularSpeed;
+    // input speeds to kinematics are limited by the OIConstants value passed below.
+    // if unlimited speed is desired and you wish to manage speeds through the OI bindings
+    // in the robot container, pass DriveConstants.kMaxspeedMetersPerSecond
+    double xSpeedDelivered = xSpeed * OIConstants.kMaxSpeedMetersPerSecond;
+    double ySpeedDelivered = ySpeed * OIConstants.kMaxSpeedMetersPerSecond;
+    double rotDelivered = rot * OIConstants.kMaxAngularSpeed;
 
+    //inverse kinematics
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
@@ -141,15 +178,11 @@ public class Swerve extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
-  /**
-   * Sets the wheels into an X formation to prevent movement.
-   */
-  public void setX() {
-    m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-  }
+
+
+
+
+
 
   /**
    * Sets the swerve ModuleStates.
@@ -165,6 +198,12 @@ public class Swerve extends SubsystemBase {
     m_rearRight.setDesiredState(desiredStates[3]);
   }
 
+
+
+
+
+
+
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
     m_frontLeft.resetEncoders();
@@ -173,10 +212,20 @@ public class Swerve extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
+
+
+
+
+
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
   }
+
+
+
+
+
 
   /**
    * Returns the heading of the robot.
@@ -187,6 +236,11 @@ public class Swerve extends SubsystemBase {
     return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
   }
 
+
+
+
+
+
   /**
    * Returns the turn rate of the robot.
    *
@@ -196,6 +250,14 @@ public class Swerve extends SubsystemBase {
     return m_gyro.getAngle() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+
+
+
+
+  /**
+   * Returns the current states of the modules.
+   * @return Array of the current module states.
+   */
   public SwerveModuleState[] getStates() {
     return new SwerveModuleState[] {
       m_frontLeft.getState(),
@@ -205,4 +267,50 @@ public class Swerve extends SubsystemBase {
     };
   }
 
+
+
+
+
+  /**
+   * Returns the current robot-relative speeds.
+   * @return ChassisSpeeds object with the speeds.
+   */
+  public ChassisSpeeds getSpeeds() {
+    ChassisSpeeds speeds = DriveConstants.kDriveKinematics.toChassisSpeeds(getStates());
+    return speeds;
+  }
+
+
+
+
+
+  /**
+   * Used during ID run to rotate the modules without PID.
+   */
+  public void rotateModules() {
+    m_frontLeft.rotate();
+    m_frontRight.rotate();
+    m_rearLeft.rotate();
+    m_rearRight.rotate();
+  }
+
+  /**
+   * Used during ID run to drive the modules without PID.
+   */
+  public void driveModules() {
+    m_frontLeft.drive();
+    m_frontRight.drive();
+    m_rearLeft.drive();
+    m_rearRight.drive();
+  }
+
+  /**
+   * Used during ID run to allstop the modules.
+   */
+  public void stop() {
+    m_frontLeft.stop();
+    m_frontRight.stop();
+    m_rearLeft.stop();
+    m_rearRight.stop();
+  }
 }

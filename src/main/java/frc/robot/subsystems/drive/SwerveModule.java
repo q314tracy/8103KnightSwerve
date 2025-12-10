@@ -40,6 +40,12 @@ public class SwerveModule extends SubsystemBase{
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
+
+
+
+
+
+
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor,
    * encoder, and PID controller. This configuration is specific to the REV
@@ -76,6 +82,10 @@ public class SwerveModule extends SubsystemBase{
     m_drivingEncoder.setPosition(0);
   }
 
+
+
+
+
   /**
    * Returns the current state of the module.
    *
@@ -87,6 +97,12 @@ public class SwerveModule extends SubsystemBase{
     return new SwerveModuleState(m_drivingEncoder.getVelocity(),
         new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
   }
+
+
+
+
+
+
 
   /**
    * Returns the current position of the module.
@@ -101,12 +117,18 @@ public class SwerveModule extends SubsystemBase{
         new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
   }
 
+
+
+
+
+
   /**
    * Sets the desired state for the module.
    *
    * @param desiredState Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState desiredState) {
+
     // Apply chassis angular offset to the desired state.
     SwerveModuleState correctedDesiredState = new SwerveModuleState();
     correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
@@ -117,7 +139,7 @@ public class SwerveModule extends SubsystemBase{
 
     // Command driving and turning SPARKS towards their respective setpoints.
     m_drivingClosedLoopController.setReference(correctedDesiredState.speedMetersPerSecond, ControlType.kVelocity);
-
+    
     // calculate turning PID and FF, write to motor
     m_turningClosedLoopController.setGoal(correctedDesiredState.angle.getRadians());
     double turningFF = m_turnMotorFeedforward.calculate(m_turningClosedLoopController.getSetpoint().velocity);
@@ -129,13 +151,47 @@ public class SwerveModule extends SubsystemBase{
     m_desiredState = desiredState;
   }
 
+
+
+
+
+
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
   }
 
+
+
+
+
+
+  //functions used during identification runs of drive subsystem
+
+  /** Used during identification run to check for turn motor and encoder inversions. */
+  public void rotate() {
+    m_turningSpark.setVoltage(0.5);
+  }
+
+  /** Used during identification run to check for drive motor inversions. */
+  public void drive() {
+    m_drivingSpark.setVoltage(0.5);
+  }
+
+  /** Used during identification run to stop motors. */
+  public void stop() {
+    m_turningSpark.setVoltage(0);
+    m_drivingSpark.setVoltage(0);
+  }
+
+
+
+
+
   @Override
   public void periodic() {
+
+    //check if simulation, if yes, update simulation data
     if (RobotBase.isSimulation()) {
       m_drivingSpark.periodic();
       m_turningSpark.periodic();

@@ -23,30 +23,29 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final class DriveConstants {
-    // Driving Parameters - Note that these are not the maximum capable speeds of
-    // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = ModuleConstants.kDriveWheelFreeSpeedRps;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
-
-    // Chassis configuration
+    // width of chassis track width
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
-    // Distance between centers of right and left wheels on robot
+    // length of chassis wheelbase
     public static final double kWheelBase = Units.inchesToMeters(26.5);
-    // Distance between front and back wheels on robot
+    // kinematics
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
+    // maximum speeds achievable
+    public static final double kMaxSpeedMetersPerSecond = ModuleConstants.kDriveWheelFreeSpeedRps * ModuleConstants.kWheelCircumferenceMeters;
+    public static final double kMaxAngularSpeed = (2 * kMaxSpeedMetersPerSecond) / kTrackWidth; // radians per second
+
     // Angular offsets of the modules relative to the chassis in radians
-    // CHARACTERIZE ME PLEASE!!!!!!!!!!!!!!!
+    // USE THIS TO SAVE ENCODER OFFSETS
     public static final double kFrontLeftChassisAngularOffset = 0;
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = 0;
     public static final double kBackRightChassisAngularOffset = 0;
 
-    // SPARK MAX CAN IDs
+    // can IDs
     public static final int kFrontLeftDrivingCanId = 11;
     public static final int kRearLeftDrivingCanId = 13;
     public static final int kFrontRightDrivingCanId = 15;
@@ -72,28 +71,32 @@ public final class Constants {
     public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     public static final double kDrivingMotorReduction = 5.36;
-    public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
-        / kDrivingMotorReduction;
+    public static final double kDriveWheelFreeSpeedRps = kDrivingMotorFreeSpeedRps / kDrivingMotorReduction;
 
     public static final double kTurningRatio = 18.75;
     public static final double kTurningMotorFreeSpeedRPS = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kTurningMaxSpeedRads = (kTurningMotorFreeSpeedRPS / kTurningRatio) * 2 * Math.PI;
-    public static final double kTurningkS = 0.05;
-    public static final double kTurninkkV = 12 / kTurningMaxSpeedRads;
-    public static final double kTurningkP = 0.2; // bump up for more response with large disturbances
+    public static final double kTurningkS = 0; //minimum voltage required to induce movement
+    public static final double kTurningkVtrim = 0.95; //use to trim the kV to dial in characterization better
+    public static final double kTurninkkV = (12 / kTurningMaxSpeedRads) * kTurningkVtrim;
+    public static final double kTurningkP = 0.3; // bump up for more response with large disturbances
     public static final double kTurningkI = 0; // do not use
     public static final double kTurningkD = 0; // use only if steady state oscillation occurs
     public static final TrapezoidProfile.Constraints kTurningConstraints = new TrapezoidProfile.Constraints(
         kTurningMaxSpeedRads,
-        kTurningMaxSpeedRads * 4 // really high = really fast accel
+        kTurningMaxSpeedRads * 8 // really high = really fast accel
     );
   }
 
+  // constants for operator control
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.2;
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAngularSpeed = 2 * Math.PI;
   }
 
+  // constants for autonomous control
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
@@ -109,6 +112,7 @@ public final class Constants {
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
+  // convenience
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }

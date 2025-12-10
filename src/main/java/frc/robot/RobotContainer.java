@@ -5,9 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drive.Swerve;
+import frc.robot.subsystems.drive.commands.DriveModules;
+import frc.robot.subsystems.drive.commands.RotateChassis;
+import frc.robot.subsystems.drive.commands.RotateModules;
 import frc.robot.utils.Telemetry;
 import frc.robot.utils.Constants.OIConstants;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,7 +30,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final Swerve m_robotDrive;
 
-  
+  // telemetry subclass, no calls needed, runs in periodic
   private final Telemetry m_telemetry;
 
   // The driver's controller
@@ -40,13 +44,16 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
+    //start datalogger
+    DataLogManager.start();
+
     // declare subsystems
     m_robotDrive = new Swerve();
     m_telemetry = new Telemetry(m_robotDrive);
     
     // Configure the button bindings
     configureButtonBindings();
-
+    
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -60,7 +67,11 @@ public class RobotContainer {
             m_robotDrive));
 
     // build autochooser and post widget
-    m_autochooser.setDefaultOption("no auto", Commands.print("schedule an auto pls"));
+    // IDrun subroutines are also included here, can comment out later to make less cluttered
+    m_autochooser.setDefaultOption("no auto", Commands.print("schedule an auto, ya goober"));
+    m_autochooser.addOption("IDrun_RotateChassis", new RotateChassis(m_robotDrive));
+    m_autochooser.addOption("IDrun_DriveModules", new DriveModules(m_robotDrive));
+    m_autochooser.addOption("IDrun_RotateModules", new RotateModules(m_robotDrive));
     SmartDashboard.putData(m_autochooser);
   }
 
@@ -68,7 +79,6 @@ public class RobotContainer {
    * Put your button bindings here, yo.
    */
   private void configureButtonBindings() {
-    // m_driverController.leftBumper().whileTrue(Commands.run(() -> m_robotDrive.setX(), this.m_robotDrive));
   }
 
   /**
