@@ -4,6 +4,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.ModuleConstants;
 
 public final class Configs {
@@ -16,8 +17,9 @@ public final class Configs {
       double drivingFactor = ModuleConstants.kWheelCircumferenceMeters / ModuleConstants.kDrivingMotorReduction;
       double turningFactor = 2 * Math.PI;
 
-      //
-      double drivingVelocityFeedForward = 0.180;
+      // this is totally arbitrary and tuned manually for the current gear ratio.
+      // adjustment will be required if ratio is changed in Constants.
+      double drivingVelocityFeedForward = 1 / DriveConstants.kMaxSpeedMetersPerSecond;
 
       drivingConfig
           .idleMode(IdleMode.kBrake)

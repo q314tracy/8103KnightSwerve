@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.Radians;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 
+import frc.robot.utils.Constants.ModuleConstants;
+
 public class CANcoderReal implements CANcoderIO {
 
   private final CANcoder m_encoder;
@@ -23,6 +25,10 @@ public class CANcoderReal implements CANcoderIO {
 
   @Override
   public double getPosition() {
-    return m_encoder.getAbsolutePosition().getValue().in(Radians);
+    if (ModuleConstants.kTurningEncoderInverted) {
+      return -m_encoder.getAbsolutePosition().getValue().in(Radians);
+    } else {
+      return m_encoder.getAbsolutePosition().getValue().in(Radians);
+    }
   }
 }

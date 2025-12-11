@@ -28,6 +28,10 @@ public class CANcoderSimulation implements CANcoderIO {
 
   @Override
   public double getPosition() {
-    return m_encoder.getAbsolutePosition().getValue().in(Radians);
+    if (ModuleConstants.kTurningEncoderInverted) {
+      return -m_encoder.getAbsolutePosition().getValue().in(Radians);
+    } else {
+      return m_encoder.getAbsolutePosition().getValue().in(Radians);
+    }
   }
 }

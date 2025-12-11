@@ -14,13 +14,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-// import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.drive.IOinterfaces.Gyro.GyroIO;
 import frc.robot.subsystems.drive.IOinterfaces.Gyro.GyroReal;
 import frc.robot.subsystems.drive.IOinterfaces.Gyro.GyroSimulation;
-// import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
 

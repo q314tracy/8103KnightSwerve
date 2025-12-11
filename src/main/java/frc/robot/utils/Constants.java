@@ -66,14 +66,13 @@ public final class Constants {
 
   public static final class ModuleConstants {
 
-    // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-    public static final double kDrivingMotorReduction = 5.36;
+    public static final double kDrivingMotorReduction = 5.36; //L3 for mk4
     public static final double kDriveWheelFreeSpeedRps = kDrivingMotorFreeSpeedRps / kDrivingMotorReduction;
 
-    public static final double kTurningRatio = 18.75;
+    public static final double kTurningRatio = 18.75; //mk4 azimuth ratio
     public static final double kTurningMotorFreeSpeedRPS = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kTurningMaxSpeedRads = (kTurningMotorFreeSpeedRPS / kTurningRatio) * 2 * Math.PI;
     public static final double kTurningkS = 0; //minimum voltage required to induce movement
@@ -86,6 +85,7 @@ public final class Constants {
         kTurningMaxSpeedRads,
         kTurningMaxSpeedRads * 8 // really high = really fast accel
     );
+    public static final boolean kTurningEncoderInverted = false;
   }
 
   // constants for operator control

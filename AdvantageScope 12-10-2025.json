@@ -1,0 +1,243 @@
+{
+  "hubs": [
+    {
+      "x": -8,
+      "y": -8,
+      "width": 1520,
+      "height": 970,
+      "state": {
+        "sidebar": {
+          "width": 300,
+          "expanded": [
+            "/SmartDashboard/Field/Robot",
+            "/SmartDashboard/VisionSystemSim-main",
+            "/SmartDashboard/VisionSystemSim-main/Sim Field",
+            "/SmartDashboard/VisionSystemSim-main/Sim Field/Robot",
+            "/SmartDashboard",
+            "/SwerveStates/0",
+            "/SwerveStates/0/angle",
+            "/SwerveStates",
+            "/ChassisSpeeds",
+            "/SwerveModuleStates/1/angle",
+            "/SmartDashboard/Field",
+            "/SwerveModuleStates/0/angle",
+            "/SwerveModuleStates/0",
+            "/SwerveModuleStates/1",
+            "/SwerveModuleStates/2",
+            "/SwerveModuleStates/3",
+            "/SmartDashboard/turn encoder velocities",
+            "/SmartDashboard/turn motor velocities",
+            "/SwerveModuleStates",
+            "/SwerveModuleStates/2/angle",
+            "/SwerveModuleStates/3/angle"
+          ]
+        },
+        "tabs": {
+          "selected": 1,
+          "tabs": [
+            {
+              "type": 0,
+              "title": "",
+              "controller": null,
+              "controllerUUID": "bpxbvk7uiv1e64ueayjl8hds43tia4sb",
+              "renderer": "#/",
+              "controlsHeight": 0
+            },
+            {
+              "type": 9,
+              "title": "Swerve",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "states",
+                    "logKey": "NT:SwerveModuleStates",
+                    "logType": "SwerveModuleState[]",
+                    "visible": true,
+                    "options": {
+                      "color": "#ff0000",
+                      "arrangement": "0,1,2,3"
+                    }
+                  }
+                ],
+                "maxSpeed": 5.26,
+                "sizeX": 1,
+                "sizeY": 1,
+                "orientation": 1
+              },
+              "controllerUUID": "upnikdzq25y8guc0vvfhb4lu5jjhhvza",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 1,
+              "title": "Module Positions",
+              "controller": {
+                "leftSources": [
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/0/angle/value",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#2b66a2",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/1/angle/value",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#e5b31b",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/2/angle/value",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#af2437",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/3/angle/value",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#80588e",
+                      "size": "normal"
+                    }
+                  }
+                ],
+                "rightSources": [],
+                "discreteSources": [],
+                "leftLockedRange": null,
+                "rightLockedRange": null,
+                "leftUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "rightUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "leftFilter": 0,
+                "rightFilter": 0
+              },
+              "controllerUUID": "zhr8az30q7jqdb5dl41klk4aalwr1h24",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 1,
+              "title": "Module Speeds",
+              "controller": {
+                "leftSources": [
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/0/speed",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#2b66a2",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/1/speed",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#e5b31b",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/2/speed",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#af2437",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:SwerveModuleStates/3/speed",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#80588e",
+                      "size": "normal"
+                    }
+                  }
+                ],
+                "rightSources": [],
+                "discreteSources": [],
+                "leftLockedRange": null,
+                "rightLockedRange": null,
+                "leftUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "rightUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "leftFilter": 0,
+                "rightFilter": 0
+              },
+              "controllerUUID": "4f9vbdc0kzj2onlqsao6n3mve6kljno4",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 2,
+              "title": "Odometry",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "robotLegacy",
+                    "logKey": "NT:/SmartDashboard/Field/Robot",
+                    "logType": "NumberArray",
+                    "visible": true,
+                    "options": {
+                      "format": "Pose2d",
+                      "units": "degrees"
+                    }
+                  },
+                  {
+                    "type": "rotationOverrideLegacy",
+                    "logKey": "NT:/SmartDashboard/heading",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "units": "radians"
+                    }
+                  }
+                ],
+                "game": "2025 Field (Welded)",
+                "bumpers": "blue",
+                "origin": "blue",
+                "orientation": 1,
+                "size": 30
+              },
+              "controllerUUID": "1xw0e35ukgz3itqn6uf2tqf043rgffu7",
+              "renderer": null,
+              "controlsHeight": 200
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "satellites": [],
+  "version": "4.1.5"
+}

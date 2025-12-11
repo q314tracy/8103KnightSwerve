@@ -6,6 +6,7 @@ package frc.robot.subsystems.drive.IOinterfaces.Gyro;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import frc.robot.utils.Constants;
 
 /** Add your docs here. */
 public class GyroReal implements GyroIO {
@@ -26,7 +27,11 @@ public class GyroReal implements GyroIO {
 
     @Override
     public double getAngle() {
-        return Units.degreesToRadians(m_gyro.getAngle());
+        if (Constants.DriveConstants.kGyroReversed) {
+            return Units.degreesToRadians(-m_gyro.getAngle());
+        } else {
+            return Units.degreesToRadians(m_gyro.getAngle());
+        }
     }
 
     @Override
